@@ -50,8 +50,6 @@ describe('Games endpoint', () => {
             const res = await request(Games).post('/games').send(game)
 
             expect(res.status).toBe(500)
-
-            await request(Games).delete('/games/Pacman')
         });
 
         it('should return a status of 500 when title is not included', async () => {
@@ -63,6 +61,15 @@ describe('Games endpoint', () => {
             const res = await request(Games).post('/games').send(game)
 
             expect(res.status).toBe(500)
+        });
+
+        it('should return a status code of 405 if game already exists', async () => {
+
+            const res = await request(Games).post('/games').send({ title: 'Pacman', genre: 'Arcade' })
+
+            expect(res.status).toBe(405)
+
+            await request(Games).delete('/games/Pacman')
         });
 
     });

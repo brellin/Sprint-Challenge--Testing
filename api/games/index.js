@@ -27,19 +27,34 @@ router.post('/', async function (req, res) {
 
     if (body.title && body.genre) {
 
-        try {
+        const { title } = body
 
-            const post = await Games.add(body)
+        const compare = await Games.find(title)
 
-            res.status(200).json(post)
+        console.log(compare)
 
-        } catch (err) {
-            console.log(err)
-            res.status(500).json({
-                error: 'Internal Server Error',
-                err
+        if (!compare) {
+
+            try {
+
+                const post = await Games.add(body)
+
+                res.status(200).json(post)
+
+            } catch (err) {
+                console.log(err)
+                res.status(500).json({
+                    error: 'Internal Server Error',
+                    err
+                })
+            }
+
+        } else {
+            res.status(405).json({
+                error: 'Already exists'
             })
         }
+
 
     } else {
         res.status(500).json({
