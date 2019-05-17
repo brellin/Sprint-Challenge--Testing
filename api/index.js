@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const cors = require('cors');
+const Games = require('./games')
 
 const server = express()
 
@@ -17,5 +18,7 @@ server.get('/', async (req, res) => {
     })
 
 })
+
+server.use('/games', Games)
 
 module.exports = server
